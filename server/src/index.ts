@@ -1,8 +1,7 @@
-import express from "express";
 import server from "./server";
 
 server.get("/", (req, res) => {
-  res.send("Welcom to my amazing notes app");
+  res.send("Welcome to my amazing notes app");
 });
 
 server.listen(3000, () => {
