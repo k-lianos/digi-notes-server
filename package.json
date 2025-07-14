@@ -1,5 +1,5 @@
 {
-  "name": "digi-notes",
+  "name": "digi-notes-server",
   "version": "1.0.0",
   "engines": {
     "node": "18.20.8"
@@ -14,7 +14,6 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@prisma/client": "^6.11.1",
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "morgan": "^1.10.0"
@@ -25,7 +24,6 @@
     "@types/morgan": "^1.9.10",
     "@types/node": "^18.19.118",
     "prettier": "^3.6.2",
-    "prisma": "^6.11.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   }
