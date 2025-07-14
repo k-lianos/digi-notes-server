@@ -6,13 +6,16 @@ interface Item {
   [key: string]: any;
 }
 
-type DataBase = Record<string, Item[]>;
+type DataBase = { _total_additions: number } & Record<string, Item[]>;
 
 const DB_FILE = path.join(__dirname, "../.simple-db.json");
 
 function loadDB(): DataBase {
   if (!fs.existsSync(DB_FILE)) {
-    fs.writeFileSync(DB_FILE, JSON.stringify({}));
+    fs.writeFileSync(
+      DB_FILE,
+      JSON.stringify({ _total_additions: 0 } as DataBase),
+    );
   }
   const data = fs.readFileSync(DB_FILE, "utf-8");
   return JSON.parse(data);
@@ -23,16 +26,22 @@ function saveDB(data: DataBase) {
 }
 
 export default {
-  getAll: () => loadDB(),
+  getAll: (model: string) => loadDB()[model] ?? [],
 
   get: (model: string, id: string): Item | undefined =>
-    loadDB()[model].find((item) => item.id === id),
+    (loadDB()[model] ?? []).find((item) => item.id === id),
 
   add: (model: string, item: Omit<Item, "id">) => {
     const db = loadDB();
+    let dbTotalAdditions = db["_total_additions"] ?? 0;
     db[model] = db[model] ?? [];
-    db[model].push({ ...item, id: db[model].length.toString() });
+    db[model].push({
+      ...item,
+      id: `simple-db-identifier-${++dbTotalAdditions}`,
+    });
+    db["_total_additions"] = dbTotalAdditions;
     saveDB(db);
+    return db[model][db[model].length - 1];
   },
 
   update: (model: string, id: string, item: Item) => {
